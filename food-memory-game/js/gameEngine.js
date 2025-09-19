@@ -142,7 +142,20 @@ class GameEngine {
             chinese: 'chinese',
             mexican: 'mexican',
             american: 'american',
-            indian: 'indian'
+            indian: 'indian',
+            korean: 'korean',
+            vietnamese: 'vietnamese',
+            greek: 'greek',
+            brazilian: 'brazilian',
+            french: 'french',
+            lebanese: 'lebanese',
+            german: 'german',
+            nigerian: 'nigerian',
+            japanese: 'japanese',
+            polish: 'polish',
+            egyptian: 'egyptian',
+            thai: 'thai',
+            russian: 'russian'
         };
 
         return restaurants.find(r => r.cuisine_type === cuisineMap[restaurantType]);

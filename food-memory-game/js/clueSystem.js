@@ -3,14 +3,14 @@ class ClueSystem {
     constructor() {
         this.discoveredClues = [];
         this.customerMemories = {
-            alice: { solved: false, cluesNeeded: 3, cluesFound: 0, preferredCuisine: 'italian' },
-            bob: { solved: false, cluesNeeded: 3, cluesFound: 0, preferredCuisine: 'chinese' },
-            carol: { solved: false, cluesNeeded: 2, cluesFound: 0, preferredCuisine: 'american' },
-            david: { solved: false, cluesNeeded: 2, cluesFound: 0, preferredCuisine: 'indian' },
-            eve: { solved: false, cluesNeeded: 4, cluesFound: 0, preferredCuisine: 'diverse' }
+            alice: { solved: false, cluesNeeded: 5, cluesFound: 0, preferredCuisine: 'italian' },
+            bob: { solved: false, cluesNeeded: 4, cluesFound: 0, preferredCuisine: 'chinese' },
+            carol: { solved: false, cluesNeeded: 4, cluesFound: 0, preferredCuisine: 'american' },
+            david: { solved: false, cluesNeeded: 5, cluesFound: 0, preferredCuisine: 'indian' },
+            eve: { solved: false, cluesNeeded: 6, cluesFound: 0, preferredCuisine: 'diverse' }
         };
         this.totalCluesFound = 0;
-        this.maxClues = 14; // Total clues available in the game
+        this.maxClues = 42; // Total clues available with 21 restaurants (2 clues per restaurant average)
     }
 
     // Generate clues based on restaurant investigation
