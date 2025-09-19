@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Food Amnesia - A Food Memory Detective Game</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="game-container">
+    <!-- Game Header -->
+    <header id="game-header">
+        <h1>The Great Food Amnesia</h1>
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+        <div id="clue-counter">Clues Found: <span id="clue-count">0</span></div>
+    </header>
+
+    <!-- Main Game Area -->
+    <div id="game-world">
+        <!-- Town Map -->
+        <div id="town-map">
+            <div id="town-center" class="location active">
+                <img src="assets/images/background/town-map.svg" alt="Town Map" class="background">
+
+                <!-- Player -->
+                <div id="player" class="character">
+                    <img src="assets/images/player.svg" alt="Player">
+                </div>
+
+                <!-- NPCs -->
+                <div id="npc-alice" class="npc" data-npc="alice">
+                    <img src="assets/images/npcs/customer1.svg" alt="Alice">
+                    <div class="npc-indicator">?</div>
+                </div>
+
+                <div id="npc-bob" class="npc" data-npc="bob">
+                    <img src="assets/images/npcs/customer2.svg" alt="Bob">
+                    <div class="npc-indicator">?</div>
+                </div>
+
+                <div id="npc-carol" class="npc" data-npc="carol">
+                    <img src="assets/images/npcs/customer3.svg" alt="Carol">
+                    <div class="npc-indicator">?</div>
+                </div>
+
+                <div id="npc-david" class="npc" data-npc="david">
+                    <img src="assets/images/npcs/customer4.svg" alt="David">
+                    <div class="npc-indicator">?</div>
+                </div>
+
+                <div id="npc-eve" class="npc" data-npc="eve">
+                    <img src="assets/images/npcs/customer5.svg" alt="Eve">
+                    <div class="npc-indicator">?</div>
+                </div>
+
+                <!-- Restaurant Entrances -->
+                <div id="restaurant-italian" class="restaurant-entrance locked" data-restaurant="italian">
+                    <img src="assets/images/restaurants/italian.svg" alt="Mama Mia's Italian">
+                    <span class="restaurant-name">Mama Mia's</span>
+                </div>
+
+                <div id="restaurant-chinese" class="restaurant-entrance locked" data-restaurant="chinese">
+                    <img src="assets/images/restaurants/chinese.svg" alt="Golden Dragon">
+                    <span class="restaurant-name">Golden Dragon</span>
+                </div>
+
+                <div id="restaurant-mexican" class="restaurant-entrance locked" data-restaurant="mexican">
+                    <img src="assets/images/restaurants/mexican.svg" alt="El Sombrero">
+                    <span class="restaurant-name">El Sombrero</span>
+                </div>
+
+                <div id="restaurant-american" class="restaurant-entrance locked" data-restaurant="american">
+                    <img src="assets/images/restaurants/american.svg" alt="Burger Palace">
+                    <span class="restaurant-name">Burger Palace</span>
+                </div>
+
+                <div id="restaurant-indian" class="restaurant-entrance locked" data-restaurant="indian">
+                    <img src="assets/images/restaurants/indian.svg" alt="Spice Garden">
+                    <span class="restaurant-name">Spice Garden</span>
+                </div>
+            </div>
+
+            <!-- Restaurant Interior Views (Initially Hidden) -->
+            <div id="restaurant-interior" class="location hidden">
+                <div id="restaurant-details"></div>
+                <button id="back-to-town">← Back to Town</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog System -->
+    <div id="dialog-container" class="hidden">
+        <div id="dialog-box">
+            <img src="assets/images/ui/dialog-box.svg" alt="Dialog Box" class="dialog-bg">
+            <div id="dialog-content">
+                <div id="speaker-name"></div>
+                <div id="dialog-text"></div>
+                <div id="dialog-choices"></div>
+            </div>
+            <button id="dialog-continue" class="hidden">Continue</button>
+            <button id="dialog-close">×</button>
+        </div>
+    </div>
+
+    <!-- Inventory/Clue System -->
+    <div id="inventory" class="hidden">
+        <img src="assets/images/ui/inventory-bg.svg" alt="Inventory" class="inventory-bg">
+        <div id="inventory-content">
+            <h3>Investigation Notebook</h3>
+            <div id="clue-list"></div>
+        </div>
+        <button id="close-inventory">×</button>
+    </div>
+
+    <!-- Game Controls -->
+    <div id="game-controls">
+        <button id="show-inventory">📋 Notebook</button>
+        <button id="toggle-music">🎵 Music</button>
+        <button id="save-game">💾 Save</button>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <h2>Loading The Great Food Amnesia...</h2>
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<!-- Audio Elements -->
+<audio id="background-music" loop>
+    <source src="assets/sounds/background-music.wav" type="audio/wav">
+</audio>
+<audio id="dialog-beep">
+    <source src="assets/sounds/dialog-beep.wav" type="audio/wav">
+</audio>
+<audio id="clue-found-sound">
+    <source src="assets/sounds/clue-found.wav" type="audio/wav">
+</audio>
+<audio id="success-sound">
+    <source src="assets/sounds/success.wav" type="audio/wav">
+</audio>
+
+<!-- Scripts -->
+<script src="js/database.js"></script>
+<script src="js/clueSystem.js"></script>
+<script src="js/dialogSystem.js"></script>
+<script src="js/player.js"></script>
+<script src="js/gameEngine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

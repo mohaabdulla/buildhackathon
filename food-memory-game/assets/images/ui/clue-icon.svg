@@ -1,0 +1,35 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <!-- Clue/Evidence icon with Bahraini detective theme -->
+
+    <!-- Magnifying glass handle -->
+    <rect x="16" y="16" width="6" height="2" fill="#8B4513" transform="rotate(45 16 16)"/>
+    <rect x="17" y="17" width="4" height="1" fill="#654321" transform="rotate(45 17 17)"/>
+
+    <!-- Magnifying glass lens -->
+    <rect x="6" y="6" width="10" height="10" fill="none" stroke="#C0C0C0" stroke-width="2" rx="5"/>
+    <rect x="7" y="7" width="8" height="8" fill="rgba(173, 216, 230, 0.3)" rx="4"/>
+
+    <!-- Evidence inside lens -->
+    <rect x="9" y="9" width="4" height="1" fill="#FF6347"/>
+    <rect x="9" y="11" width="3" height="1" fill="#FFD700"/>
+    <rect x="9" y="13" width="4" height="1" fill="#32CD32"/>
+
+    <!-- Detective badge reflection -->
+    <rect x="11" y="8" width="2" height="2" fill="#FFD700"/>
+    <rect x="11" y="8" width="1" height="1" fill="#F39C12"/>
+
+    <!-- Sparkle effects (clue discovered) -->
+    <rect x="4" y="4" width="1" height="3" fill="#FFFFFF"/>
+    <rect x="2" y="5" width="3" height="1" fill="#FFFFFF"/>
+
+    <rect x="18" y="2" width="1" height="2" fill="#FFD700"/>
+    <rect x="17" y="2" width="2" height="1" fill="#FFD700"/>
+
+    <rect x="20" y="8" width="1" height="2" fill="#FFFFFF"/>
+    <rect x="19" y="8" width="2" height="1" fill="#FFFFFF"/>
+
+    <!-- Fingerprint pattern (evidence theme) -->
+    <rect x="8" y="10" width="1" height="1" fill="#8B0000"/>
+    <rect x="10" y="12" width="1" height="1" fill="#8B0000"/>
+    <rect x="12" y="10" width="1" height="1" fill="#8B0000"/>
+</svg>

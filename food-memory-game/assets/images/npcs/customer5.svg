@@ -1,0 +1,65 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+    <!-- Eve - Cosmopolitan Bahraini woman who loves diverse cuisines -->
+
+    <!-- Stylish hijab with pattern -->
+    <rect x="12" y="8" width="24" height="16" fill="#4B0082"/>
+    <rect x="10" y="12" width="28" height="8" fill="#4B0082"/>
+    <!-- Geometric pattern (Islamic art inspired) -->
+    <rect x="14" y="10" width="2" height="2" fill="#FFD700"/>
+    <rect x="18" y="10" width="2" height="2" fill="#FFD700"/>
+    <rect x="22" y="10" width="2" height="2" fill="#FFD700"/>
+    <rect x="26" y="10" width="2" height="2" fill="#FFD700"/>
+    <rect x="30" y="10" width="2" height="2" fill="#FFD700"/>
+
+    <!-- Face -->
+    <rect x="16" y="16" width="16" height="12" fill="#DEB887"/>
+
+    <!-- Eyes with makeup -->
+    <rect x="17" y="17" width="4" height="1" fill="#4B0082"/> <!-- Eyeshadow -->
+    <rect x="27" y="17" width="4" height="1" fill="#4B0082"/>
+    <rect x="18" y="18" width="2" height="2" fill="#2F4F4F"/>
+    <rect x="28" y="18" width="2" height="2" fill="#2F4F4F"/>
+    <!-- Eyeliner -->
+    <rect x="17" y="19" width="4" height="1" fill="#000000"/>
+    <rect x="27" y="19" width="4" height="1" fill="#000000"/>
+
+    <!-- Nose -->
+    <rect x="23" y="22" width="2" height="2" fill="#CD853F"/>
+
+    <!-- Lipstick -->
+    <rect x="22" y="24" width="4" height="2" fill="#DC143C"/>
+
+    <!-- Elegant abaya with embroidery -->
+    <rect x="14" y="28" width="20" height="16" fill="#000080"/>
+    <!-- Intricate embroidery pattern -->
+    <rect x="16" y="30" width="16" height="1" fill="#FFD700"/>
+    <rect x="18" y="32" width="12" height="1" fill="#FFD700"/>
+    <rect x="20" y="34" width="8" height="1" fill="#FFD700"/>
+    <rect x="16" y="36" width="16" height="1" fill="#FF69B4"/>
+    <rect x="18" y="38" width="12" height="1" fill="#FF69B4"/>
+    <rect x="20" y="40" width="8" height="1" fill="#FF69B4"/>
+
+    <!-- Arms with henna -->
+    <rect x="10" y="32" width="4" height="8" fill="#DEB887"/>
+    <rect x="34" y="32" width="4" height="8" fill="#DEB887"/>
+    <!-- Henna patterns -->
+    <rect x="10" y="34" width="1" height="1" fill="#8B4513"/>
+    <rect x="12" y="36" width="1" height="1" fill="#8B4513"/>
+    <rect x="11" y="38" width="1" height="1" fill="#8B4513"/>
+    <rect x="35" y="34" width="1" height="1" fill="#8B4513"/>
+    <rect x="37" y="36" width="1" height="1" fill="#8B4513"/>
+    <rect x="36" y="38" width="1" height="1" fill="#8B4513"/>
+
+    <!-- Multi-cuisine thought bubble -->
+    <rect x="4" y="4" width="8" height="8" fill="#FFFFFF"/>
+    <!-- Different food icons -->
+    <rect x="5" y="5" width="2" height="2" fill="#FF6347"/> <!-- Italian -->
+    <rect x="7" y="5" width="2" height="2" fill="#FFD700"/> <!-- Chinese -->
+    <rect x="5" y="7" width="2" height="2" fill="#32CD32"/> <!-- Mexican -->
+    <rect x="7" y="7" width="2" height="2" fill="#FF4500"/> <!-- Indian -->
+    <rect x="6" y="9" width="2" height="2" fill="#4169E1"/> <!-- American -->
+
+    <!-- Travel stamps (cultural symbols) -->
+    <rect x="40" y="32" width="4" height="4" fill="#FF0000"/>
+    <rect x="41" y="33" width="2" height="2" fill="#FFFFFF"/>
+</svg>
