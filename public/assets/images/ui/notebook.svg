@@ -1,0 +1,48 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <!-- Small notebook icon for UI buttons -->
+
+    <!-- Notebook cover -->
+    <rect x="4" y="2" width="24" height="28" fill="#8B4513" rx="2"/>
+    <rect x="5" y="3" width="22" height="26" fill="#A0522D" rx="1"/>
+
+    <!-- Spine -->
+    <rect x="4" y="2" width="3" height="28" fill="#654321"/>
+    <rect x="5" y="2" width="1" height="28" fill="#8B4513"/>
+
+    <!-- Spiral binding -->
+    <rect x="6" y="6" width="1" height="2" fill="#C0C0C0"/>
+    <rect x="6" y="10" width="1" height="2" fill="#C0C0C0"/>
+    <rect x="6" y="14" width="1" height="2" fill="#C0C0C0"/>
+    <rect x="6" y="18" width="1" height="2" fill="#C0C0C0"/>
+    <rect x="6" y="22" width="1" height="2" fill="#C0C0C0"/>
+    <rect x="6" y="26" width="1" height="2" fill="#C0C0C0"/>
+
+    <!-- Pages -->
+    <rect x="8" y="4" width="18" height="24" fill="#FFFFFF" rx="1"/>
+
+    <!-- Lines on page -->
+    <rect x="10" y="8" width="14" height="1" fill="#E0E0E0"/>
+    <rect x="10" y="12" width="14" height="1" fill="#E0E0E0"/>
+    <rect x="10" y="16" width="14" height="1" fill="#E0E0E0"/>
+    <rect x="10" y="20" width="14" height="1" fill="#E0E0E0"/>
+    <rect x="10" y="24" width="14" height="1" fill="#E0E0E0"/>
+
+    <!-- Red margin -->
+    <rect x="12" y="6" width="1" height="20" fill="#FF6B6B"/>
+
+    <!-- Writing/notes -->
+    <rect x="13" y="8" width="8" height="1" fill="#666666"/>
+    <rect x="13" y="10" width="6" height="1" fill="#666666"/>
+    <rect x="13" y="12" width="10" height="1" fill="#666666"/>
+    <rect x="13" y="14" width="5" height="1" fill="#666666"/>
+
+    <!-- Detective badge -->
+    <rect x="20" y="5" width="6" height="4" fill="#FFD700"/>
+    <rect x="21" y="6" width="4" height="2" fill="#F39C12"/>
+    <rect x="22" y="6" width="2" height="2" fill="#E67E22"/>
+
+    <!-- Magnifying glass -->
+    <rect x="18" y="22" width="4" height="4" fill="none" stroke="#8B4513" stroke-width="1"/>
+    <rect x="21" y="25" width="2" height="1" fill="#8B4513"/>
+    <rect x="19" y="23" width="2" height="2" fill="rgba(255,255,255,0.5)"/>
+</svg>

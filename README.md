@@ -1,33 +1,95 @@
 
-## Global Fields
+# Food Detective Game
 
-```SQL
-    is_active BOOLEAN DEFAULT 1
+A JavaScript-based narrative mystery game where you play as a detective investigating the disappearance of a food critic in a bustling food district.
+
+## 🎮 Game Overview
+
+Explore a town map filled with restaurants, talk to owners and customers, collect clues, and piece together the mystery of what happened to the missing food critic. The game features:
+
+- **Narrative-driven gameplay** with dialog-based investigations
+- **SVG-based graphics** for clean, scalable visuals
+- **Restaurant exploration** across 6 different cuisine types
+- **Clue collection system** with an investigation notebook
+- **Real-time movement** with WASD/arrow key controls
+
+## 🚀 How to Run
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm
+
+### Development
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open browser to http://localhost:5173
 ```
 
-Enables soft deletion to maintain data integrity and order history.
+### Production Build
+```bash
+# Build for production
+npm run build
 
-```SQL
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+# Preview production build
+npm run preview
 ```
 
-Standard audit fields for tracking record creation and modifications.
+## 🕹️ Controls
 
-## 1) Users Table
+| Key | Action |
+|-----|--------|
+| **WASD** / **Arrow Keys** | Move player around the map |
+| **Click** / **Space** | Interact with restaurants and NPCs |
+| **I** | Open/Close Investigation Notebook |
+| **H** | Open/Close Help menu |
+| **ESC** | Close dialogs and menus |
 
-```SQL
-CREATE TABLE IF NOT EXISTS USERS (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    role TEXT CHECK(role IN ('customer', 'restaurant_owner', 'driver')) NOT NULL DEFAULT 'customer',
-    is_active BOOLEAN DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+## 🎯 How to Play
+
+1. **Move Around** - Use WASD or arrow keys to explore the town
+2. **Visit Restaurants** - Click on restaurant buildings or get close and press Space
+3. **Talk to People** - Each restaurant owner and customer has unique information
+4. **Collect Clues** - Important information gets added to your Investigation Notebook
+5. **Review Progress** - Press 'I' to check your clues and piece together the mystery
+6. **Solve the Case** - Use the information you've gathered to understand what happened
+
+## 🏗️ Technical Architecture
+
+### Core Technologies
+- **React** - UI components and state management
+- **PIXI.js** - 2D game rendering and sprite management
+- **SQL.js** - Client-side SQLite database for game data
+- **Zustand** - Lightweight state management
+- **Vite** - Build tool and development server
+
+### File Structure
+```
+src/
+├── App.jsx              # Main React application
+├── main.jsx             # Application entry point
+├── engine/
+│   └── scenes.js        # Scene management and initialization
+├── render/
+│   └── pixiApp.js       # PIXI.js renderer and game loop
+├── systems/
+│   ├── identity.js      # Game state management
+│   └── dialogManager.js # Dialog and narrative system
+├── ui/                  # React UI components
+│   ├── DialogBox.jsx    # Conversation interface
+│   ├── InventoryPanel.jsx # Investigation notebook
+│   ├── HUD.jsx          # Game HUD
+│   ├── LoadingScreen.jsx # Loading interface
+│   └── ControlsHelp.jsx # Help menu
+└── data/
+    └── sqlite.js        # Database management
+```
+
+This is a narrative-focused detective game that emphasizes story over mechanics, with simple controls and an approachable interface suitable for players of all skill levels.
 );
 ```
 

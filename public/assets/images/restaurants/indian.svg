@@ -1,0 +1,120 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <!-- Spice Garden Indian Restaurant with Bahraini-Indian fusion -->
+
+    <!-- Building base -->
+    <rect x="8" y="24" width="48" height="32" fill="#F5DEB3"/>
+
+    <!-- Islamic-Indian dome fusion -->
+    <rect x="20" y="8" width="24" height="16" fill="#FF6347"/>
+    <rect x="22" y="6" width="20" height="8" fill="#FFD700"/>
+    <rect x="24" y="4" width="16" height="6" fill="#8B0000"/>
+    <rect x="28" y="2" width="8" height="4" fill="#FF6347"/>
+    <rect x="30" y="0" width="4" height="2" fill="#FFD700"/>
+
+    <!-- Minaret-inspired towers -->
+    <rect x="10" y="16" width="4" height="8" fill="#8B4513"/>
+    <rect x="8" y="14" width="8" height="2" fill="#FFD700"/>
+    <rect x="9" y="12" width="6" height="2" fill="#FF6347"/>
+
+    <rect x="50" y="16" width="4" height="8" fill="#8B4513"/>
+    <rect x="48" y="14" width="8" height="2" fill="#FFD700"/>
+    <rect x="49" y="12" width="6" height="2" fill="#FF6347"/>
+
+    <!-- Ornate entrance with Indian arch -->
+    <rect x="24" y="32" width="16" height="24" fill="#8B4513"/>
+    <rect x="26" y="28" width="12" height="4" fill="#FF6347"/>
+    <rect x="28" y="24" width="8" height="4" fill="#FFD700"/>
+
+    <!-- Intricately carved door -->
+    <rect x="28" y="40" width="8" height="16" fill="#654321"/>
+    <rect x="30" y="42" width="4" height="12" fill="#8B4513"/>
+    <!-- Indian door pattern -->
+    <rect x="31" y="44" width="2" height="2" fill="#FFD700"/>
+    <rect x="30" y="46" width="4" height="1" fill="#FF6347"/>
+    <rect x="31" y="48" width="2" height="2" fill="#FFD700"/>
+    <rect x="30" y="50" width="4" height="1" fill="#FF6347"/>
+
+    <!-- Jali (latticed) windows -->
+    <rect x="12" y="32" width="8" height="8" fill="#8B4513"/>
+    <rect x="13" y="33" width="6" height="6" fill="#FF6347"/>
+    <!-- Intricate lattice pattern -->
+    <rect x="14" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="16" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="18" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="14" y="35" width="4" height="1" fill="#FFD700"/>
+    <rect x="14" y="37" width="4" height="1" fill="#FFD700"/>
+
+    <rect x="44" y="32" width="8" height="8" fill="#8B4513"/>
+    <rect x="45" y="33" width="6" height="6" fill="#FF6347"/>
+    <rect x="46" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="48" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="50" y="34" width="1" height="4" fill="#FFD700"/>
+    <rect x="46" y="35" width="4" height="1" fill="#FFD700"/>
+    <rect x="46" y="37" width="4" height="1" fill="#FFD700"/>
+
+    <!-- Islamic calligraphy-inspired decorative band -->
+    <rect x="8" y="24" width="48" height="3" fill="#FFD700"/>
+    <rect x="10" y="25" width="2" height="1" fill="#8B0000"/>
+    <rect x="14" y="25" width="2" height="1" fill="#8B0000"/>
+    <rect x="18" y="25" width="2" height="1" fill="#8B0000"/>
+    <rect x="44" y="25" width="2" height="1" fill="#8B0000"/>
+    <rect x="48" y="25" width="2" height="1" fill="#8B0000"/>
+    <rect x="52" y="25" width="2" height="1" fill="#8B0000"/>
+
+    <!-- Indian diyas (oil lamps) -->
+    <rect x="16" y="28" width="3" height="2" fill="#FFD700"/>
+    <rect x="17" y="26" width="1" height="2" fill="#FF6347"/> <!-- Flame -->
+
+    <rect x="45" y="28" width="3" height="2" fill="#FFD700"/>
+    <rect x="46" y="26" width="1" height="2" fill="#FF6347"/>
+
+    <!-- Spice pots decoration -->
+    <rect x="4" y="48" width="3" height="4" fill="#8B4513"/>
+    <rect x="4" y="46" width="3" height="2" fill="#FF6347"/> <!-- Spices -->
+
+    <rect x="57" y="48" width="3" height="4" fill="#8B4513"/>
+    <rect x="57" y="46" width="3" height="2" fill="#FFD700"/>
+
+    <!-- Sign with Hindi-inspired lettering -->
+    <rect x="18" y="14" width="28" height="6" fill="#FFFFFF"/>
+    <rect x="19" y="15" width="26" height="4" fill="#FF6347"/>
+    <!-- Devanagari-inspired patterns -->
+    <rect x="21" y="16" width="2" height="2" fill="#FFD700"/>
+    <rect x="25" y="16" width="2" height="2" fill="#FFFFFF"/>
+    <rect x="29" y="16" width="2" height="2" fill="#228B22"/>
+    <rect x="33" y="16" width="2" height="2" fill="#FFD700"/>
+    <rect x="37" y="16" width="2" height="2" fill="#FFFFFF"/>
+    <rect x="41" y="16" width="2" height="2" fill="#228B22"/>
+
+    <!-- Rangoli pattern at entrance -->
+    <rect x="26" y="52" width="12" height="4" fill="#FFD700"/>
+    <rect x="28" y="53" width="8" height="2" fill="#FF6347"/>
+    <rect x="30" y="53" width="1" height="2" fill="#FFFFFF"/>
+    <rect x="32" y="53" width="1" height="2" fill="#228B22"/>
+    <rect x="34" y="53" width="1" height="2" fill="#FFFFFF"/>
+    <rect x="36" y="53" width="1" height="2" fill="#8A2BE2"/>
+
+    <!-- Peacock feather motifs (Indian) -->
+    <rect x="6" y="40" width="2" height="6" fill="#228B22"/>
+    <rect x="5" y="38" width="4" height="2" fill="#4169E1"/>
+    <rect x="6" y="36" width="2" height="2" fill="#FFD700"/>
+
+    <rect x="56" y="40" width="2" height="6" fill="#228B22"/>
+    <rect x="55" y="38" width="4" height="2" fill="#4169E1"/>
+    <rect x="56" y="36" width="2" height="2" fill="#FFD700"/>
+
+    <!-- Ground with intricate tiles -->
+    <rect x="6" y="56" width="52" height="8" fill="#DEB887"/>
+    <rect x="8" y="58" width="48" height="4" fill="#CD853F"/>
+    <!-- Tile pattern -->
+    <rect x="12" y="59" width="2" height="2" fill="#FF6347"/>
+    <rect x="16" y="59" width="2" height="2" fill="#FFD700"/>
+    <rect x="20" y="59" width="2" height="2" fill="#228B22"/>
+    <rect x="24" y="59" width="2" height="2" fill="#4169E1"/>
+    <rect x="28" y="59" width="2" height="2" fill="#8A2BE2"/>
+    <rect x="32" y="59" width="2" height="2" fill="#FF6347"/>
+    <rect x="36" y="59" width="2" height="2" fill="#FFD700"/>
+    <rect x="40" y="59" width="2" height="2" fill="#228B22"/>
+    <rect x="44" y="59" width="2" height="2" fill="#4169E1"/>
+    <rect x="48" y="59" width="2" height="2" fill="#8A2BE2"/>
+</svg>

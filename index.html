@@ -1,13 +1,388 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Great Food Amnesia - Detective Game</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️ The Great Food Amnesia - Detective Mystery Game</title>
+    <link rel="stylesheet" href="src/ui/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="game-container">
+    <!-- Floating UI Elements -->
+    <div id="floating-ui">
+        <!-- Achievement Notifications -->
+        <div id="achievement-popup" class="hidden">
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-text">
+                <h3 id="achievement-title">Achievement Unlocked!</h3>
+                <p id="achievement-desc">You found your first clue!</p>
+            </div>
+        </div>
+        
+        <!-- Floating Hints -->
+        <div id="floating-hint" class="hidden">
+            <div class="hint-icon">💡</div>
+            <div id="hint-text">Press SPACE to interact with objects</div>
+        </div>
+    </div>
+
+    <!-- Game Header with Enhanced Design -->
+    <header id="game-header">
+        <div class="header-section">
+            <h1>🕵️ The Great Food Amnesia</h1>
+            <div class="subtitle">Detective Mystery Game</div>
+        </div>
+        
+        <div class="controls-panel">
+            <div id="controls-hint">
+                <span class="control-key">WASD</span> Move • 
+                <span class="control-key">Shift</span> Run • 
+                <span class="control-key">Space</span> Interact
+            </div>
+        </div>
+        
+        <div class="stats-panel">
+            <div class="stat-item">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-info">
+                    <span class="stat-label">Clues</span>
+                    <span id="clue-count" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-info">
+                    <span class="stat-label">Time</span>
+                    <span id="game-timer" class="stat-value">00:00</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <span class="stat-label">Score</span>
+                    <span id="score-value" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini-Map for Navigation -->
+        <div class="mini-map-container">
+            <div class="mini-map-title">📍 Map</div>
+            <div id="mini-map">
+                <div class="mini-map-grid">
+                    <!-- Mini player indicator -->
+                    <div id="mini-player"></div>
+                    <!-- Mini restaurant indicators -->
+                    <div class="mini-restaurant" data-restaurant="italian" style="top: 15%; left: 35%;"></div>
+                    <div class="mini-restaurant" data-restaurant="chinese" style="top: 25%; left: 55%;"></div>
+                    <div class="mini-restaurant" data-restaurant="mexican" style="top: 45%; left: 35%;"></div>
+                    <div class="mini-restaurant" data-restaurant="thai" style="top: 35%; left: 15%;"></div>
+                    <div class="mini-restaurant" data-restaurant="american" style="top: 55%; left: 55%;"></div>
+                    <div class="mini-restaurant" data-restaurant="indian" style="top: 75%; left: 45%;"></div>
+                    <!-- Mini NPC indicators -->
+                    <div class="mini-npc" style="top: 20%; left: 15%;"></div>
+                    <div class="mini-npc" style="top: 30%; left: 75%;"></div>
+                    <div class="mini-npc" style="top: 65%; left: 25%;"></div>
+                    <div class="mini-npc" style="top: 70%; left: 70%;"></div>
+                    <div class="mini-npc" style="top: 45%; left: 85%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar with Animation -->
+        <div id="progress-container">
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+                <div class="progress-text">Investigation Progress</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Area with Enhanced Visuals -->
+    <div id="game-world">
+        <!-- Ambient Effects -->
+        <div id="ambient-effects">
+            <div class="floating-particles"></div>
+            <div class="ambient-glow"></div>
+        </div>
+
+        <!-- Town Map -->
+        <div id="town-map">
+            <div id="town-center" class="location active">
+                <img src="public/images/background/town-map.svg" alt="Town Map" class="background">
+
+                <!-- Player with Enhanced Visuals -->
+                <div id="player" class="character enhanced">
+                    <img src="public/images/player.svg" alt="Player">
+                    <div class="character-shadow"></div>
+                    <div class="movement-trail"></div>
+                </div>
+
+                <!-- NPCs with Interactive Elements -->
+                <div id="npc-alice" class="npc interactive" data-npc="alice" data-tooltip="Alice - Local Foodie">
+                    <img src="public/images/npcs/customer1.svg" alt="Alice">
+                    <div class="npc-indicator pulsing">
+                        <span class="indicator-icon">💬</span>
+                        <div class="interaction-ring"></div>
+                    </div>
+                    <div class="npc-name-tag">Alice</div>
+                </div>
+
+                <div id="npc-bob" class="npc interactive" data-npc="bob" data-tooltip="Bob - Restaurant Regular">
+                    <img src="public/images/npcs/customer2.svg" alt="Bob">
+                    <div class="npc-indicator pulsing">
+                        <span class="indicator-icon">💬</span>
+                        <div class="interaction-ring"></div>
+                    </div>
+                    <div class="npc-name-tag">Bob</div>
+                </div>
+
+                <div id="npc-carol" class="npc interactive" data-npc="carol" data-tooltip="Carol - Mystery Witness">
+                    <img src="public/images/npcs/customer3.svg" alt="Carol">
+                    <div class="npc-indicator pulsing">
+                        <span class="indicator-icon">💬</span>
+                        <div class="interaction-ring"></div>
+                    </div>
+                    <div class="npc-name-tag">Carol</div>
+                </div>
+
+                <div id="npc-david" class="npc interactive" data-npc="david" data-tooltip="David - Food Critic">
+                    <img src="public/images/npcs/customer4.svg" alt="David">
+                    <div class="npc-indicator pulsing">
+                        <span class="indicator-icon">💬</span>
+                        <div class="interaction-ring"></div>
+                    </div>
+                    <div class="npc-name-tag">David</div>
+                </div>
+                <div id="npc-eve" class="npc interactive" data-npc="eve" data-tooltip="Eve - Mysterious Stranger">
+                    <img src="public/images/npcs/customer5.svg" alt="Eve">
+                    <div class="npc-indicator pulsing">
+                        <span class="indicator-icon">🔍</span>
+                        <div class="interaction-ring"></div>
+                    </div>
+                    <div class="npc-name-tag">Eve</div>
+                </div>
+
+                <!-- Enhanced Restaurant Entrances -->
+                <div id="restaurant-italian" class="restaurant-entrance interactive locked" data-restaurant="italian" data-tooltip="Mama Mia's Italian Restaurant">
+                    <img src="public/images/restaurants/italian.svg" alt="Mama Mia's Italian">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🍝 Mama Mia's</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+
+                <div id="restaurant-chinese" class="restaurant-entrance interactive locked" data-restaurant="chinese" data-tooltip="Golden Dragon Chinese Cuisine">
+                    <img src="public/images/restaurants/chinese.svg" alt="Golden Dragon Chinese">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🥡 Golden Dragon</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+
+                <div id="restaurant-mexican" class="restaurant-entrance interactive locked" data-restaurant="mexican" data-tooltip="El Sombrero Mexican Cantina">
+                    <img src="public/images/restaurants/mexican.svg" alt="El Sombrero Mexican">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🌮 El Sombrero</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+
+                <div id="restaurant-thai" class="restaurant-entrance interactive locked" data-restaurant="thai" data-tooltip="Bangkok Palace Thai Kitchen">
+                    <img src="public/images/restaurants/thai.svg" alt="Bangkok Palace Thai">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🍜 Bangkok Palace</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+
+                <div id="restaurant-american" class="restaurant-entrance interactive locked" data-restaurant="american" data-tooltip="Big Joe's American Diner">
+                    <img src="public/images/restaurants/american.svg" alt="Big Joe's American">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🍔 Big Joe's</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+
+                <div id="restaurant-indian" class="restaurant-entrance interactive locked" data-restaurant="indian" data-tooltip="Spice Garden Indian Cuisine">
+                    <img src="public/images/restaurants/indian.svg" alt="Spice Garden Indian">
+                    <div class="restaurant-info">
+                        <span class="restaurant-name">🍛 Spice Garden</span>
+                        <div class="restaurant-status">Investigating...</div>
+                        <div class="lock-indicator">🔒</div>
+                    </div>
+                    <div class="entrance-glow"></div>
+                </div>
+                    <img src="public/images/restaurants/chinese.svg" alt="Golden Dragon">
+                    <span class="restaurant-name">Golden Dragon</span>
+                </div>
+
+                <div id="restaurant-mexican" class="restaurant-entrance locked" data-restaurant="mexican">
+                    <img src="public/images/restaurants/mexican.svg" alt="El Sombrero">
+                    <span class="restaurant-name">El Sombrero</span>
+                </div>
+
+                <div id="restaurant-american" class="restaurant-entrance locked" data-restaurant="american">
+                    <img src="public/images/restaurants/american.svg" alt="Burger Palace">
+                    <span class="restaurant-name">Burger Palace</span>
+                </div>
+
+                <div id="restaurant-indian" class="restaurant-entrance locked" data-restaurant="indian">
+                    <img src="public/images/restaurants/indian.svg" alt="Spice Garden">
+                    <span class="restaurant-name">Spice Garden</span>
+                </div>
+            </div>
+
+            <!-- Restaurant Interior Views (Initially Hidden) -->
+            <div id="restaurant-interior" class="location hidden">
+                <div id="restaurant-details"></div>
+                <button id="back-to-town">← Back to Town</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog System -->
+    <div id="dialog-container" class="hidden">
+        <div id="dialog-box">
+            <img src="public/images/ui/dialog-box.svg" alt="Dialog Box" class="dialog-bg">
+            <div id="dialog-content">
+                <div id="speaker-name"></div>
+                <div id="dialog-text"></div>
+                <div id="dialog-choices"></div>
+            </div>
+            <button id="dialog-continue" class="hidden">Continue</button>
+            <button id="dialog-close">×</button>
+        </div>
+    </div>
+
+    <!-- Enhanced Clue Discovery Modal -->
+    <div id="clue-discovery-modal" class="hidden">
+        <div class="clue-modal-overlay"></div>
+        <div class="clue-modal-content">
+            <div class="clue-discovery-header">
+                <div class="clue-icon">🔍</div>
+                <h2>Clue Discovered!</h2>
+                <div class="discovery-particles"></div>
+            </div>
+            
+            <div class="clue-details">
+                <div class="clue-image-container">
+                    <div id="clue-visual" class="clue-visual"></div>
+                </div>
+                
+                <div class="clue-information">
+                    <h3 id="clue-title">Mystery Clue Found</h3>
+                    <p id="clue-description">You've uncovered an important piece of evidence!</p>
+                    
+                    <div class="clue-metadata">
+                        <div class="clue-type">
+                            <span class="meta-label">Type:</span>
+                            <span id="clue-type-value">Evidence</span>
+                        </div>
+                        <div class="clue-location">
+                            <span class="meta-label">Location:</span>
+                            <span id="clue-location-value">Unknown</span>
+                        </div>
+                        <div class="clue-relevance">
+                            <span class="meta-label">Relevance:</span>
+                            <div class="relevance-stars" id="clue-relevance-stars"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="clue-actions">
+                <button id="add-to-notebook" class="clue-action-btn primary">
+                    📔 Add to Notebook
+                </button>
+                <button id="return-to-map" class="clue-action-btn secondary">
+                    🗺️ Back to Map
+                </button>
+                <button id="continue-investigating" class="clue-action-btn accent">
+                    🔍 Continue Investigating
+                </button>
+            </div>
+            
+            <div class="clue-progress">
+                <div class="progress-info">
+                    <span>Investigation Progress</span>
+                    <span id="clue-progress-text">0/42 clues found</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="clue-progress-bar" class="clue-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory/Clue System -->
+    <div id="inventory" class="hidden">
+        <img src="public/images/ui/inventory-bg.svg" alt="Inventory" class="inventory-bg">
+        <div id="inventory-content">
+            <h3>Investigation Notebook</h3>
+            <div id="clue-list"></div>
+        </div>
+        <button id="close-inventory">×</button>
+    </div>
+
+    <!-- Game Controls -->
+    <div id="game-controls">
+        <button id="show-inventory">📋 Notebook</button>
+        <button id="toggle-music">🎵 Music</button>
+        <button id="save-game">💾 Save</button>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div id="story-container">
+            <div id="story-title">The Great Food Amnesia</div>
+            <div id="story-text"></div>
+            <div id="story-progress">
+                <div id="story-progress-bar"></div>
+            </div>
+        </div>
+        <div id="loading-spinner-container">
+            <div class="loading-spinner"></div>
+            <div id="loading-text">Loading...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Audio Elements (temporarily disabled due to range request issues) -->
+<!--
+<audio id="background-music" loop>
+    <source src="sounds/background-music.wav" type="audio/wav">
+</audio>
+<audio id="dialog-beep">
+    <source src="sounds/dialog-beep.wav" type="audio/wav">
+</audio>
+<audio id="clue-found-sound">
+    <source src="sounds/clue-found.wav" type="audio/wav">
+</audio>
+<audio id="success-sound">
+    <source src="sounds/success.wav" type="audio/wav">
+</audio>
+-->
+
+<!-- Scripts -->
+<script src="src/database.js"></script>
+<script src="src/clueSystem.js"></script>
+<script src="src/dialogSystem.js"></script>
+<script src="src/player.js"></script>
+<script src="src/gameEngine.js"></script>
+<script src="src/main.js"></script>
+</body>
 </html>
