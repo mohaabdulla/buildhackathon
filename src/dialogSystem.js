@@ -5,8 +5,21 @@ class DialogSystem {
         this.dialogHistory = [];
         this.isDialogOpen = false;
         this.typewriterSpeed = 50; // milliseconds per character
+        this.dialogBeepSound = null; // Store reference to dialog beep audio
+        this.isPlayingBeep = false; // Track if beep is currently playing
+        this.typewriterTimer = null; // Store timer reference to clear if needed
         this.setupEventListeners();
         this.initializeDialogs();
+        this.initializeAudio();
+    }
+
+    initializeAudio() {
+        // Get reference to dialog beep sound
+        this.dialogBeepSound = document.getElementById('dialog-beep');
+        if (this.dialogBeepSound) {
+            this.dialogBeepSound.loop = true; // Make it loop during dialog
+            this.dialogBeepSound.volume = 0.3; // Set volume to 30%
+        }
     }
 
     initializeDialogs() {
@@ -289,6 +302,22 @@ class DialogSystem {
         }
     }
 
+    startDialogBeep() {
+        if (this.dialogBeepSound && !this.isPlayingBeep) {
+            this.dialogBeepSound.currentTime = 0; // Reset to beginning
+            this.dialogBeepSound.play().catch(e => console.log('Could not play dialog beep:', e));
+            this.isPlayingBeep = true;
+        }
+    }
+
+    stopDialogBeep() {
+        if (this.dialogBeepSound && this.isPlayingBeep) {
+            this.dialogBeepSound.pause();
+            this.dialogBeepSound.currentTime = 0; // Reset to beginning
+            this.isPlayingBeep = false;
+        }
+    }
+
     // Display the dialog on screen
     showDialog(dialog) {
         const container = document.getElementById('dialog-container');
@@ -309,6 +338,9 @@ class DialogSystem {
         dialogChoices.innerHTML = '';
         continueBtn.classList.add('hidden');
 
+        // Start dialog beep sound
+        this.startDialogBeep();
+
         // Typewriter effect for dialog text
         this.typeWriterEffect(dialogText, dialog.text, () => {
             this.showChoices(dialog.choices);
@@ -317,13 +349,25 @@ class DialogSystem {
 
     // Typewriter effect for dialog text
     typeWriterEffect(element, text, callback) {
+        // Clear any existing timer to prevent conflicts
+        if (this.typewriterTimer) {
+            clearInterval(this.typewriterTimer);
+        }
+        
         let i = 0;
-        const timer = setInterval(() => {
+        // Clear the element first to ensure clean start
+        element.textContent = '';
+        
+        this.typewriterTimer = setInterval(() => {
             if (i < text.length) {
+                // Use textContent to safely add characters
                 element.textContent += text.charAt(i);
                 i++;
             } else {
-                clearInterval(timer);
+                clearInterval(this.typewriterTimer);
+                this.typewriterTimer = null;
+                // Stop dialog beep when typewriter effect is done
+                this.stopDialogBeep();
                 if (callback) callback();
             }
         }, this.typewriterSpeed);
@@ -458,6 +502,13 @@ class DialogSystem {
         if (container) {
             container.classList.add('hidden');
         }
+        // Clear typewriter timer if running
+        if (this.typewriterTimer) {
+            clearInterval(this.typewriterTimer);
+            this.typewriterTimer = null;
+        }
+        // Stop dialog beep sound when closing dialog
+        this.stopDialogBeep();
         this.isDialogOpen = false;
         this.currentDialog = null;
     }
