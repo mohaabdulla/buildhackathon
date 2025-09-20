@@ -581,6 +581,11 @@ body::before {
     flex: 1;
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
 }
 
 .location {
@@ -602,8 +607,14 @@ body::before {
 /* ===== ENHANCED TOWN MAP STYLES ===== */
 #town-map {
     position: relative;
-    width: 100%;
+    width: 95%;
     height: 100%;
+    max-width: 1200px;
+    max-height: 1100px;
+    border: 3px solid #3498db;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .background {
@@ -614,6 +625,14 @@ body::before {
     top: 0;
     left: 0;
     z-index: 1;
+}
+
+#town-center {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
 }
 
 /* Add a subtle exploration grid overlay */
@@ -637,10 +656,10 @@ body::before {
 #town-center::after {
     content: '';
     position: absolute;
-    top: 2.5%;
-    left: 2.5%;
-    width: 95%;
-    height: 95%;
+    top: 3%;
+    left: 3%;
+    width: 94%;
+    height: 94%;
     border: 2px dashed rgba(255, 215, 0, 0.3);
     border-radius: 8px;
     pointer-events: none;
@@ -673,7 +692,7 @@ body::before {
 
 .character-shadow {
     position: absolute;
-    bottom: -5px;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
     width: 30px;
@@ -681,6 +700,7 @@ body::before {
     background: radial-gradient(ellipse, rgba(0, 0, 0, 0.3), transparent);
     border-radius: 50%;
     z-index: -1;
+    pointer-events: none;
 }
 
 .movement-trail {
@@ -695,9 +715,10 @@ body::before {
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: -1;
+    pointer-events: none;
 }
 
-.character.moving .movement-trail {
+.character.walking .movement-trail {
     opacity: 1;
     animation: trailPulse 0.5s ease-in-out infinite;
 }
@@ -713,12 +734,11 @@ body::before {
 }
 
 #player {
-    top: 50%;
-    left: 50%;
+    position: absolute;
     transform: translate(-50%, -50%);
     z-index: 15;
     transition: all 0.1s ease-out;
-    will-change: transform;
+    will-change: transform, top, left;
 }
 
 #player img {
@@ -853,11 +873,11 @@ body::before {
     position: relative;
 }
 
-#npc-alice { top: 20%; left: 15%; }
-#npc-bob { top: 30%; left: 75%; }
-#npc-carol { top: 65%; left: 25%; }
-#npc-david { top: 70%; left: 70%; }
-#npc-eve { top: 45%; left: 85%; }
+#npc-alice { top: 5%; left: 20%; }
+#npc-bob { top: 10%; left: 70%; }
+#npc-carol { top: 40%; left: 25%; }
+#npc-david { top: 45%; left: 65%; }
+#npc-eve { top: 25%; left: 75%; }
 
 .npc img {
     width: 48px;
@@ -902,8 +922,9 @@ body::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: absolute;
     cursor: pointer;
+    z-index: 12;
 }
 
 .restaurant-entrance.interactive {
@@ -934,12 +955,55 @@ body::before {
     50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
-#restaurant-italian { top: 15%; left: 35%; }
-#restaurant-chinese { top: 25%; left: 55%; }
-#restaurant-mexican { top: 45%; left: 35%; }
-#restaurant-american { top: 55%; left: 55%; }
-#restaurant-indian { top: 75%; left: 45%; }
-#restaurant-thai { top: 35%; left: 15%; }
+#restaurant-italian { top: -30%; left: 30%; }
+#restaurant-chinese { top: -30%; left: 60%; }
+#restaurant-mexican { top: -25%; left: 10%; }
+#restaurant-american { top: -28%; left: 75%; }
+#restaurant-indian { top: -40%; left: 35%; }
+#restaurant-thai { top: -26%; left: 55%; z-index: 20; }
+
+/* Ensure Thai restaurant is highly visible */
+#restaurant-thai {
+    top: -26% !important; 
+    left: 55% !important; 
+    z-index: 20 !important;
+    opacity: 1 !important;
+    display: flex !important;
+    visibility: visible !important;
+    width: 64px !important;
+    height: 64px !important;
+}
+
+/* Fix Thai restaurant image display */
+#restaurant-thai img {
+    width: 64px !important;
+    height: 64px !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    image-rendering: pixelated !important;
+    filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.5)) brightness(1) !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    transform: none !important;
+}
+
+/* Override locked styles for Thai restaurant specifically */
+#restaurant-thai.locked img,
+#restaurant-thai img {
+    filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.5)) brightness(1) !important;
+    opacity: 1 !important;
+}
+
+/* Force Thai restaurant to appear unlocked */
+#restaurant-thai.locked {
+    opacity: 1 !important;
+}
+
+#restaurant-thai.locked img {
+    filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.5)) brightness(1) !important;
+    opacity: 1 !important;
+}
 
 .restaurant-entrance img {
     width: 64px;
@@ -1432,6 +1496,18 @@ body::before {
 
     .restaurant-entrance, .npc {
         transform: scale(0.8);
+    }
+
+    /* Mobile map adjustments */
+    #game-world {
+        padding: 5px;
+    }
+
+    #town-map {
+        width: 98%;
+        height: 95%;
+        max-width: none;
+        max-height: none;
     }
 }
 

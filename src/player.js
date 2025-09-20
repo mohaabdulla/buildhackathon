@@ -6,34 +6,71 @@ class Player {
         this.isMoving = false;
         this.currentLocation = 'town-center';
         this.visitedRestaurants = [];
-        this.unlockedRestaurants = ['italian']; // Start with Italian restaurant unlocked
+        this.unlockedRestaurants = ['italian', 'chinese', 'mexican', 'american', 'indian', 'thai']; // Start with all restaurants unlocked
         
-        // Improved movement system
+        // Smooth movement system
         this.keysPressed = new Set();
-        this.moveSpeed = 0.8; // More reasonable speed for smooth movement
-        this.movementLoop = null;
+        this.moveSpeed = 0.2; // Slower movement for better control
+        this.isAnimating = false;
+        this.cameraEnabled = false; // Disable camera following by default (use bigger map instead)
 
         this.setupControls();
         this.setupInteractionHandlers();
-        this.setupMiniMapControls();
         this.updatePosition();
-        this.startMovementLoop();
+        this.updateRestaurantVisuals(); // Update restaurant visual states
+        this.startSmoothMovement();
+    }
+
+    // Dynamic boundary calculation based on map size and sprite dimensions
+    getBoundaries() {
+        const mapElement = document.getElementById('town-center');
+        const playerSize = 48; // Player sprite size in pixels
+        
+        if (mapElement) {
+            const mapRect = mapElement.getBoundingClientRect();
+            const marginX = (playerSize / 2 / mapRect.width) * 100; // Convert to percentage
+            const marginY = (playerSize / 2 / mapRect.height) * 100; // Convert to percentage
+            
+            return {
+                minX: Math.max(1, marginX),
+                maxX: Math.min(99, 100 - marginX),
+                minY: Math.max(1, marginY),
+                maxY: Math.min(99, 100 - marginY)
+            };
+        }
+        
+        // Fallback boundaries if map element not found
+        return {
+            minX: 3,
+            maxX: 97,
+            minY: 3,
+            maxY: 97
+        };
     }
 
     setupControls() {
-        // Improved keyboard controls for smooth movement
+        // Keyboard controls for smooth movement
         document.addEventListener('keydown', (e) => {
-            if (window.gameDialogSystem && window.gameDialogSystem.isOpen()) return;
+            if (window.gameDialogSystem && window.gameDialogSystem.isOpen()) return; // Don't move during dialog
 
             const key = e.key.toLowerCase();
-            if (['arrowup', 'w', 'arrowdown', 's', 'arrowleft', 'a', 'arrowright', 'd', 'shift', 'control'].includes(key)) {
+            
+            // Add keys for smooth movement
+            if (['arrowup', 'w', 'arrowdown', 's', 'arrowleft', 'a', 'arrowright', 'd'].includes(key)) {
                 e.preventDefault();
                 this.keysPressed.add(key);
             }
             
+            // Interaction keys
             if (key === ' ' || key === 'enter') {
                 e.preventDefault();
                 this.interact();
+            }
+            
+            // Camera toggle (C key)
+            if (key === 'c') {
+                e.preventDefault();
+                this.toggleCamera();
             }
         });
 
@@ -68,18 +105,18 @@ class Player {
                 // Horizontal swipe
                 if (Math.abs(deltaX) > minSwipeDistance) {
                     if (deltaX > 0) {
-                        this.move('right');
+                        this.moveDiscrete('right');
                     } else {
-                        this.move('left');
+                        this.moveDiscrete('left');
                     }
                 }
             } else {
                 // Vertical swipe
                 if (Math.abs(deltaY) > minSwipeDistance) {
                     if (deltaY > 0) {
-                        this.move('down');
+                        this.moveDiscrete('down');
                     } else {
-                        this.move('up');
+                        this.moveDiscrete('up');
                     }
                 }
             }
@@ -112,74 +149,96 @@ class Player {
         });
     }
 
-    setupMiniMapControls() {
-        // Click-to-move functionality for mini-map
-        const miniMap = document.getElementById('mini-map');
-        if (miniMap) {
-            miniMap.addEventListener('click', (e) => {
-                const rect = miniMap.getBoundingClientRect();
-                const clickX = ((e.clientX - rect.left) / rect.width) * 100;
-                const clickY = ((e.clientY - rect.top) / rect.height) * 100;
-                
-                // Move player to clicked position (with boundaries)
-                const newPosition = {
-                    x: Math.max(2.5, Math.min(97.5, clickX)),
-                    y: Math.max(2.5, Math.min(97.5, clickY))
-                };
-                
-                this.animateToPosition(newPosition);
-            });
-        }
-
-        // Add hover effect to show mini-map is clickable
-        if (miniMap) {
-            miniMap.style.cursor = 'pointer';
-            miniMap.title = 'Click to move player to this location';
-        }
-    }
-
-    animateToPosition(targetPosition) {
-        // Smooth animation to target position
-        const startPosition = { ...this.position };
-        const deltaX = targetPosition.x - startPosition.x;
-        const deltaY = targetPosition.y - startPosition.y;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        
-        // Calculate animation duration based on distance
-        const duration = Math.min(1000, Math.max(300, distance * 20));
-        const startTime = Date.now();
-        
-        const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            // Easing function for smooth movement
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-            
-            this.position.x = startPosition.x + deltaX * easeProgress;
-            this.position.y = startPosition.y + deltaY * easeProgress;
-            
-            this.updatePosition();
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
+    startSmoothMovement() {
+        const updateMovement = () => {
+            if (window.gameDialogSystem && window.gameDialogSystem.isOpen()) {
+                requestAnimationFrame(updateMovement);
+                return;
             }
+
+            let moved = false;
+            const newPosition = { ...this.position };
+            
+            // Get dynamic boundaries based on actual map size
+            const boundaries = this.getBoundaries();
+            const { minX, maxX, minY, maxY } = boundaries;
+
+            // Check pressed keys and move smoothly
+            if (this.keysPressed.has('arrowup') || this.keysPressed.has('w')) {
+                newPosition.y = Math.max(minY, this.position.y - this.moveSpeed);
+                moved = true;
+            }
+            if (this.keysPressed.has('arrowdown') || this.keysPressed.has('s')) {
+                newPosition.y = Math.min(maxY, this.position.y + this.moveSpeed);
+                moved = true;
+            }
+            if (this.keysPressed.has('arrowleft') || this.keysPressed.has('a')) {
+                newPosition.x = Math.max(minX, this.position.x - this.moveSpeed);
+                moved = true;
+            }
+            if (this.keysPressed.has('arrowright') || this.keysPressed.has('d')) {
+                newPosition.x = Math.min(maxX, this.position.x + this.moveSpeed);
+                moved = true;
+            }
+
+            if (moved) {
+                this.position = newPosition;
+                this.updatePosition();
+                
+                // Add walking animation
+                if (!this.element.classList.contains('walking')) {
+                    this.element.classList.add('walking');
+                }
+            } else {
+                // Remove walking animation when not moving
+                this.element.classList.remove('walking');
+            }
+
+            requestAnimationFrame(updateMovement);
         };
         
-        animate();
+        updateMovement();
     }
 
+    // Discrete movement for touch/swipe controls
+    moveDiscrete(direction) {
+        if (this.isMoving) return;
+
+        const moveDistance = 5; // Increased for larger map
+        const newPosition = { ...this.position };
+
+        // Get dynamic boundaries
+        const boundaries = this.getBoundaries();
+        const { minX, maxX, minY, maxY } = boundaries;
+
+        switch(direction) {
+            case 'up':
+                newPosition.y = Math.max(minY, this.position.y - moveDistance);
+                break;
+            case 'down':
+                newPosition.y = Math.min(maxY, this.position.y + moveDistance);
+                break;
+            case 'left':
+                newPosition.x = Math.max(minX, this.position.x - moveDistance);
+                break;
+            case 'right':
+                newPosition.x = Math.min(maxX, this.position.x + moveDistance);
+                break;
+        }
+
+        this.animateMovement(newPosition);
+    }
+
+    // Keep old move method for backward compatibility but update boundaries
     move(direction) {
         if (this.isMoving) return;
 
-        const moveDistance = 5; // Percentage
+        const moveDistance = 5; // Increased for larger map
         const newPosition = { ...this.position };
 
-        // Expanded boundaries to match processMovement
-        const minX = 2.5;
-        const maxX = 97.5;
-        const minY = 2.5;
-        const maxY = 97.5;
+        // Get dynamic boundaries
+        const boundaries = this.getBoundaries();
+        const { minX, maxX, minY, maxY } = boundaries;
 
         switch(direction) {
             case 'up':
@@ -200,114 +259,111 @@ class Player {
     }
 
     animateMovement(newPosition) {
+        if (this.isAnimating) return;
+        
         this.isMoving = true;
-        this.position = newPosition;
+        this.isAnimating = true;
+        
+        const startPosition = { ...this.position };
+        const deltaX = newPosition.x - startPosition.x;
+        const deltaY = newPosition.y - startPosition.y;
+        const duration = 200; // Smoother, faster animation
+        const startTime = Date.now();
 
         // Add walking animation class
         this.element.classList.add('walking');
 
-        // Animate to new position
-        this.updatePosition();
-
-        // Remove walking animation after movement
-        setTimeout(() => {
-            this.element.classList.remove('walking');
-            this.isMoving = false;
-        }, 300);
-    }
-
-    startMovementLoop() {
-        let lastTime = 0;
-        const targetFPS = 60;
-        const frameTime = 1000 / targetFPS;
-        
-        const updateMovement = (currentTime) => {
-            if (currentTime - lastTime >= frameTime) {
-                this.processMovement();
-                lastTime = currentTime;
-            }
-            this.movementLoop = requestAnimationFrame(updateMovement);
-        };
-        updateMovement(0);
-    }
-
-    processMovement() {
-        if (window.gameDialogSystem && window.gameDialogSystem.isOpen()) return;
-        
-        let moved = false;
-        const newPosition = { ...this.position };
-        
-        // Adjust speed based on modifier keys
-        let currentSpeed = this.moveSpeed;
-        if (this.keysPressed.has('shift')) {
-            currentSpeed *= 2; // Running speed
-        } else if (this.keysPressed.has('control') || this.keysPressed.has('ctrl')) {
-            currentSpeed *= 0.5; // Slow walking speed
-        }
-
-        // Expanded boundaries to allow full map exploration
-        // Account for player sprite size (roughly 2.5% on each side)
-        const minX = 2.5;
-        const maxX = 97.5;
-        const minY = 2.5;
-        const maxY = 97.5;
-
-        // Check all pressed keys for smooth diagonal movement
-        if (this.keysPressed.has('arrowup') || this.keysPressed.has('w')) {
-            newPosition.y = Math.max(minY, this.position.y - currentSpeed);
-            moved = true;
-        }
-        if (this.keysPressed.has('arrowdown') || this.keysPressed.has('s')) {
-            newPosition.y = Math.min(maxY, this.position.y + currentSpeed);
-            moved = true;
-        }
-        if (this.keysPressed.has('arrowleft') || this.keysPressed.has('a')) {
-            newPosition.x = Math.max(minX, this.position.x - currentSpeed);
-            moved = true;
-        }
-        if (this.keysPressed.has('arrowright') || this.keysPressed.has('d')) {
-            newPosition.x = Math.min(maxX, this.position.x + currentSpeed);
-            moved = true;
-        }
-
-        if (moved) {
-            this.position = newPosition;
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Smooth easing function
+            const easeProgress = 1 - Math.pow(1 - progress, 2);
+            
+            this.position.x = startPosition.x + deltaX * easeProgress;
+            this.position.y = startPosition.y + deltaY * easeProgress;
+            
             this.updatePosition();
             
-            // Add walking animation with different speeds
-            if (!this.element.classList.contains('walking')) {
-                this.element.classList.add('walking');
-            }
-            
-            // Add running class for faster animation
-            if (this.keysPressed.has('shift')) {
-                this.element.classList.add('running');
+            if (progress < 1) {
+                requestAnimationFrame(animate);
             } else {
-                this.element.classList.remove('running');
+                this.position = newPosition; // Ensure exact final position
+                this.updatePosition();
+                this.element.classList.remove('walking');
+                this.isMoving = false;
+                this.isAnimating = false;
             }
-        } else {
-            // Remove walking animation when not moving
-            this.element.classList.remove('walking', 'running');
-        }
+        };
+        
+        animate();
     }
 
     updatePosition() {
         if (this.element) {
             this.element.style.top = `${this.position.y}%`;
             this.element.style.left = `${this.position.x}%`;
+            
+            // Update camera to follow player
+            this.updateCamera();
         }
-        
-        // Update mini-map player position
-        this.updateMiniMapPosition();
     }
 
-    updateMiniMapPosition() {
-        const miniPlayer = document.getElementById('mini-player');
-        if (miniPlayer) {
-            // Convert main map position to mini-map coordinates
-            miniPlayer.style.top = `${this.position.y}%`;
-            miniPlayer.style.left = `${this.position.x}%`;
+    updateCamera() {
+        if (!this.cameraEnabled) {
+            // Reset camera position if disabled
+            const townCenter = document.getElementById('town-center');
+            if (townCenter) {
+                townCenter.style.transform = 'translate(0px, 0px)';
+            }
+            return;
         }
+        
+        const townCenter = document.getElementById('town-center');
+        if (!townCenter) return;
+        
+        // Calculate camera offset to keep player in view
+        // Convert player position (percentage) to pixels for camera calculation
+        const mapRect = townCenter.getBoundingClientRect();
+        const playerX = (this.position.x / 100) * mapRect.width;
+        const playerY = (this.position.y / 100) * mapRect.height;
+        
+        // Get viewport dimensions
+        const gameWorld = document.getElementById('game-world');
+        if (!gameWorld) return;
+        
+        const viewportRect = gameWorld.getBoundingClientRect();
+        const viewportCenterX = viewportRect.width / 2;
+        const viewportCenterY = viewportRect.height / 2;
+        
+        // Calculate desired camera position to center player
+        let cameraX = viewportCenterX - playerX;
+        let cameraY = viewportCenterY - playerY;
+        
+        // Constrain camera to map boundaries
+        const maxOffsetX = Math.max(0, mapRect.width - viewportRect.width);
+        const maxOffsetY = Math.max(0, mapRect.height - viewportRect.height);
+        
+        cameraX = Math.max(-maxOffsetX, Math.min(0, cameraX));
+        cameraY = Math.max(-maxOffsetY, Math.min(0, cameraY));
+        
+        // Apply smooth camera movement
+        townCenter.style.transform = `translate(${cameraX}px, ${cameraY}px)`;
+        townCenter.style.transition = 'transform 0.1s ease-out';
+    }
+
+    // Toggle camera following
+    toggleCamera() {
+        this.cameraEnabled = !this.cameraEnabled;
+        this.updateCamera(); // Apply the change immediately
+        
+        // Show notification to user
+        const message = this.cameraEnabled ? 
+            "📷 Camera following enabled! Map will follow player." : 
+            "📷 Camera following disabled! Static map view.";
+        this.showNotification(message);
+        
+        console.log(`Camera following: ${this.cameraEnabled ? 'enabled' : 'disabled'}`);
     }
 
     moveTowards(targetElement) {
@@ -324,9 +380,13 @@ class Player {
         const moveX = deltaX > 0 ? Math.min(10, deltaX - 5) : Math.max(-10, deltaX + 5);
         const moveY = deltaY > 0 ? Math.min(10, deltaY - 5) : Math.max(-10, deltaY + 5);
 
+        // Get dynamic boundaries
+        const boundaries = this.getBoundaries();
+        const { minX, maxX, minY, maxY } = boundaries;
+
         const newPosition = {
-            x: Math.max(5, Math.min(90, this.position.x + moveX)),
-            y: Math.max(5, Math.min(90, this.position.y + moveY))
+            x: Math.max(minX, Math.min(maxX, this.position.x + moveX)),
+            y: Math.max(minY, Math.min(maxY, this.position.y + moveY))
         };
 
         this.animateMovement(newPosition);
@@ -524,7 +584,7 @@ class Player {
             this.position = state.position || this.position;
             this.currentLocation = state.currentLocation || this.currentLocation;
             this.visitedRestaurants = state.visitedRestaurants || [];
-            this.unlockedRestaurants = state.unlockedRestaurants || ['italian'];
+            this.unlockedRestaurants = state.unlockedRestaurants || ['italian', 'chinese', 'mexican', 'american', 'indian', 'thai'];
 
             this.updatePosition();
             this.updateRestaurantVisuals();
@@ -586,11 +646,8 @@ class Player {
 
     // Cleanup method for proper memory management
     cleanup() {
-        if (this.movementLoop) {
-            cancelAnimationFrame(this.movementLoop);
-            this.movementLoop = null;
-        }
         this.keysPressed.clear();
+        this.element.classList.remove('walking');
     }
 }
 
